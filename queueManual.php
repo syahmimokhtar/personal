@@ -14,15 +14,24 @@ interface IQueuable{
 class Queue implements IQueuable{
 
   public $queue = array();
- 
+  public $firstElement;
+  public $lastElement;
+
+  function __construct()
+  {
+    $this->firstElement=-1;
+    $this->lastElement=-1;
+
+  }
  
 
+  //create a function to return size of the queue 
   public function size() {
-     echo 'size of array is '.(count($this->queue));
+     echo 'size of array is '.($this->lastElement-$this->firstElement);
   }
 
   public function enqueue($item) {
-    array_push($this->queue, $item);
+    $this->queue[++$this->lastElement]=$item  ;
     $imploded=implode(',', $this->queue);
     echo $item." is added into the queue. <br>";
     echo " new  queue is :".$imploded."<br><br>";
@@ -30,17 +39,21 @@ class Queue implements IQueuable{
   }
 
   public function dequeue() {
-      $removed= array_shift($this->queue);
-      echo $removed." is removed from the queue.<br>";
+      $item= $this->queue[++$this->firstElement];
+      echo $item." is removed from the queue.<br>";
 
   }
 
   public function getQueue() {
-      
-    $imploded=implode(',', $this->queue);
-     echo 'current queue is ' .$imploded."<br>" ;
 
-      
+    $arr=[];
+
+    for ($x = $this->firstElement+1; $x<=$this->lastElement; $x++) {
+      $arr[]=$this->queue[$x];
+    }
+    $imploded=implode(',', $arr);
+    echo 'current array is '.$imploded.'<br>' ;
+
    
   }
   
@@ -68,20 +81,28 @@ $MyQueue->printFIFO();
 
 
 
-//LIFO
+///FIFO
 class Stack implements IQueuable{
 
   public $queue = array();
+  public $firstElement;
+  public $lastElement;
 
+  function __construct()
+  {
+    $this->firstElement=-1;
+    $this->lastElement=-1;
+
+  }
  
 
   //create a function to return size of the queue 
   public function size() {
-     echo 'size of array is '.(count($this->queue));
+     echo 'size of array is '.($this->lastElement-1);
   }
 
   public function enqueue($item) {
-    array_push($this->queue, $item);
+    $this->queue[++$this->lastElement]=$item  ;
     $imploded=implode(',', $this->queue);
     echo $item." is added into the queue. <br>";
     echo " new  queue is :".$imploded."<br><br>";
@@ -89,29 +110,35 @@ class Stack implements IQueuable{
   }
 
   public function dequeue() {
-      $removed= array_pop($this->queue);
-      echo $removed." is removed from the queue.<br>";
+      $item= $this->queue[$this->lastElement++];
+      echo $item." is removed from the queue.<br>";
 
   }
 
   public function getQueue() {
-      
-    $imploded=implode(',', $this->queue);
-     echo 'current queue is ' .$imploded."<br>" ;
 
-      
+    $arr=[];
+
+    for ($x = $this->firstElement+1; $x<$this->lastElement-1; $x++) {
+      $arr[]=$this->queue[$x];
+    }
+
+    $imploded=implode(',', $arr);
+    echo 'current array is '.$imploded.'<br>' ;
+
    
   }
+
   
   public function printLIFO(){
-      echo "<br><strong>this is LIFO</strong>";
+    echo "<br><strong>this is LIFO</strong>";
   }
 
   
 }
 
-echo '<br><br>';
 
+echo '<br><br>';
 $MyQueue = new Stack();
 $MyQueue->enqueue(1);
 $MyQueue->enqueue(2);
@@ -123,6 +150,9 @@ $MyQueue->dequeue();
 $MyQueue->getQueue();
 $MyQueue->size();
 $MyQueue->printLIFO();
+
+
+
 
 
 
