@@ -4,7 +4,18 @@
 abstract class Creator{
     abstract public function factoryMethod():IQueuable;
 
-    
+    public function someOperation(): string
+    {
+        // Call the factory method to create a Product object.
+        $product = $this->factoryMethod();
+        // Now, use the product.
+        $result = "Creator: The same creator's code has just worked with " .
+        $product-> dequeue();
+        $product-> getQueue();
+        $product-> size();
+
+        return $result;
+    }
 }
 
 interface IQueuable{
@@ -22,6 +33,8 @@ class QueueCreator extends Creator{
     {
         return new Queue;
     }
+
+    
 }
 
 class StackCreator extends Creator{
@@ -64,5 +77,19 @@ class Queue implements IQueuable{
         }
 
 }
+
+
+function clientCode(Creator $creator)
+{
+    echo "Client: I'm not aware of the creator's class, but it still works.\n";
+    // . $creator->dequeue();
+}
+
+
+
+
+echo "App: Launched with the ConcreteCreator1.\n";
+clientCode(new QueueCreator());
+echo "\n\n";
 
 ?>
